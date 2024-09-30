@@ -1,0 +1,25 @@
+relationship 84493620-42dc-44c6-9a53-766017d5665d
+	fromColumn: Sales.CustomerKey
+	toColumn: Customer.CustomerKey
+
+relationship a3e903b7-996b-4043-a67a-e9d12f8d4384
+	fromColumn: Sales.ProductKey
+	toColumn: Product.ProductKey
+
+relationship 2d557b58-6bfa-4ef5-967c-6f513aaea944
+	fromColumn: Sales.StoreKey
+	toColumn: Store.StoreKey
+
+relationship 79ea10a8-737c-4354-a6cc-a45c77ebfa5b
+	fromColumn: Sales.'Order Date'
+	toColumn: Date.Date
+
+relationship 2ca118fd-9f4d-4364-81b7-ece3ce951af4
+	isActive: false
+	fromColumn: Sales.'Delivery Date'
+	toColumn: Date.Date
+
+relationship 25d95b75-b61d-43e9-87cd-2efd51f9f976
+	fromColumn: 'Currency Exchange'.Date
+	toColumn: Date.Date
+

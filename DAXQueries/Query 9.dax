@@ -1,0 +1,2 @@
+EVALUATE
+	DISTINCT('Customer'[Age (bins)])

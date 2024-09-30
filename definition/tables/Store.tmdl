@@ -1,0 +1,98 @@
+table Store
+	lineageTag: 2a839a6a-edeb-4232-b981-fa08521e2f5f
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f7a84ea0-a53a-4d70-893d-476fc2978e43
+		summarizeBy: none
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Store Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: ef9fac1a-2217-4c53-87fc-c0bdd683aa02
+		summarizeBy: none
+		sourceColumn: Store Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 7146ee8d-9f0b-402c-b214-15ccc5e8fcec
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 6b3fab08-77f1-4e11-bc7c-f6ef1b748823
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: d150fa60-4444-4e7d-bb8b-6e05678e822d
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Square Meters'
+		dataType: int64
+		formatString: 0
+		lineageTag: 596c2ff0-3561-43d5-9f11-96cf5e68a38e
+		summarizeBy: none
+		sourceColumn: Square Meters
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Open Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c957f530-7fee-4728-839f-e1cb66422c48
+		summarizeBy: none
+		sourceColumn: Open Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Close Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c324c5b8-4799-4809-b848-e884b09f39ba
+		summarizeBy: none
+		sourceColumn: Close Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Status
+		dataType: string
+		lineageTag: db6b1e30-1812-4c29-8e5a-8daecf0a5801
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Store-d6be713a-476b-4755-8292-a89a36e6d4e5 = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    dbo_Store = #"Contoso 100K"{[Schema="dbo",Item="Store"]}[Data]
+				in
+				    dbo_Store
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

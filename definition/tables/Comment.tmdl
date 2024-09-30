@@ -1,0 +1,56 @@
+table Comment
+	lineageTag: 1061169e-9020-48fa-b9f1-141ebd6e143e
+
+	measure 'Sales Value Comment' = ```
+			
+			    VAR _CurrentMonth = 4
+			
+			    VAR __Comments = FILTER(Comment, Comment[Month] = SELECTEDVALUE('Date'[Month Short]))
+			
+			    Return
+			        countrows(__Comments)
+			
+			
+			```
+		formatString: 0
+		lineageTag: 54b95064-92ae-47dd-8e24-335ef3fb9c03
+
+	measure 'Sales Value Comment Text' = FIRSTNONBLANK(Comment[Text], [Sales Value Comment])
+		lineageTag: 073373d4-e831-453c-8085-c8cd4b139e64
+
+	column Month
+		dataType: string
+		lineageTag: 8a506cdd-1cd3-4ef6-a933-98e6d6b7b776
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Text
+		dataType: string
+		lineageTag: e7e658e1-1cc1-488a-a7b5-a8dc004a883e
+		summarizeBy: none
+		sourceColumn: Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Point
+		dataType: string
+		lineageTag: b84496fd-75bd-4967-909a-1b7de09677db
+		summarizeBy: none
+		sourceColumn: Point
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Comment = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WciwoUtJRCs9ILFHIzFMoyUhVyEgsKEjNS81LUchILUoFShoZQIBSbCwA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Month = _t, Text = _t, Point = _t])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

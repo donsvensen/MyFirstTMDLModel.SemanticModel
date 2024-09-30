@@ -1,0 +1,383 @@
+table Sales
+	lineageTag: 80e5f550-e643-4ad8-8341-76607643e28a
+
+	measure 'Sales Value' = SUMX(Sales, [Quantity] * [Net Price])
+		formatString: #,0
+		lineageTag: 1770106f-a2a4-4069-b3ec-09e1ee578953
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Sales Value LY' = CALCULATE([Sales Value], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: #,0
+		lineageTag: f99ad8cd-f913-40c2-a522-59e49464a580
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Label placeholder' = -600000
+		formatString: 0
+		lineageTag: 2beeb092-091a-4d2b-87f8-3686baf60051
+
+	measure 'Sales Value Chg' = [Sales Value]-[Sales Value LY]
+		formatString: #,0
+		lineageTag: 62349c42-b683-47d3-8fd2-0805a885b1fc
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Sales Value Chg pct' = DIVIDE([Sales Value Chg], [Sales Value LY])
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 53854f7d-13ab-4ff7-b0c2-580206e16f08
+
+	measure 'Latest Year' = ```
+			
+			    CALCULATE(MAX('Date'[Year]),Sales)
+			
+			```
+		formatString: 0
+		lineageTag: f4ff6295-91d2-47fa-a0aa-e76085749187
+
+	measure 'PY Chg' = 8000000
+		formatString: 0
+		lineageTag: 56121d98-46d6-4d10-9fe0-a406d8701cf6
+
+	measure 'PY Chg % placeholder' = 16000000
+		formatString: 0
+		lineageTag: ab13a4c3-3b1d-4194-bcdb-1b1c47771d76
+
+	measure 'PY Chg & Placeholder Value' = [PY Chg % placeholder] + [Sales Value Chg]
+		formatString: #,0.###############\ "kr.";-#,0.###############\ "kr.";#,0.###############\ "kr."
+		lineageTag: 4bb936da-ca6c-49f0-b92f-fd8232c87eb1
+
+		annotation PBI_FormatHint = {"currencyCulture":"da-DK"}
+
+	measure 'Dummy Sales Value' = 1
+		lineageTag: 0d52cae1-7822-41b1-b3b5-5040a9a8f0af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Zero = 0
+		lineageTag: ceac2320-cda6-4b55-8439-a9e823d8390f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'The Order Date' = CALCULATE(MIN(Sales[Order Date]))
+		lineageTag: 6b398c34-40a3-4d0e-83ab-c586cf5c8ea7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'The Delivery date' = MIN(Sales[Delivery Date])
+		lineageTag: 9431b1db-0301-4d9a-9307-8726861befef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order in completion phase' = ```
+			
+			    VAR __PeriodSelected = ALLSELECTED('Date'[Date])
+			
+			    VAR __IsInPeriod = DATESBETWEEN('Date'[Date], 
+			                            CALCULATE(MIN(Sales[Order Date]), ALL('Date')), 
+			                            CALCULATE(MIN(Sales[Delivery Date]), ALL('Date'))
+			                            )
+			
+			    VAR _x = COUNTROWS( INTERSECT(__PeriodSelected, __IsInPeriod))
+			
+			    RETURN
+			        _x
+			
+			
+			```
+		lineageTag: de94bf93-f04d-416e-b347-fc4b1f41b074
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Units' = SUM(Sales[Quantity])
+		lineageTag: f9ef6667-9343-4339-ae72-0ae58f3a8626
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rounded Sales Value' = ROUND([Sales Value],  - [Range Value])
+		lineageTag: 3212fdda-b86d-451e-b404-bb493d29ae7f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Product Count' = DISTINCTCOUNT(Sales[ProductKey])
+		lineageTag: 40367d63-4929-4c5b-84cb-d1ebda646274
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Count info' = "No of customer in total " & FORMAT(CALCULATE(DISTINCTCOUNT(Sales[CustomerKey])), "0,0")
+		lineageTag: 632857cc-9a7e-479b-abaf-2740514f9381
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Count' = ```
+			
+			
+			    SUMX(
+			        VALUES(Sales[CustomerKey]),
+			        1
+			    )
+			
+			```
+		lineageTag: f65ddef5-1e1b-4b4e-a63c-e06b0508d15e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Price' = DIVIDE([Sales Value], [Sales Units])
+		lineageTag: fe8e4329-a591-4060-a89a-e68f87c330c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top Value' = if(WEEKDAY(MAX('Date'[Date]),2) >=6, 200000, BLANK())
+		lineageTag: 9a60c81f-b7ed-48b0-939c-fdb48b72acad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Country Share of Total' = ```
+			
+			    VAR __countryTotal = CALCULATE([Sales Value], ALL('Product'[Category]))
+			    VAR __SalesTotal = CALCULATE([Sales Value], ALL('Product'[Category]), ALL(Customer[Country]))
+			    VAR __Result = DIVIDE(__countryTotal, __SalesTotal)*100
+			    RETURN
+			        __Result
+			```
+		lineageTag: 85f4df7f-7f8d-4054-93f9-a192e86ff22f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Includ = if([Country Share of Total] >= [100 Value], 1, 0)
+		lineageTag: 06a1d745-e36a-442f-8e8d-9c1a86d9159e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Value Index' = DIVIDE([Sales Value], [Sales Value LY], BLANK())*100
+		lineageTag: cbc5d75a-ed61-4493-8897-accb865b12db
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Share of Sales Value' = DIVIDE([Sales Value], CALCULATE([Sales Value], ALLSELECTED('Product')) ) * 100
+		formatString: #,0.0
+		lineageTag: 0391cccf-2f86-4896-a005-ea9446c4877b
+
+	measure 'Latest Week' = ```
+			
+			    CALCULATE(MAX('Date'[ISO Week]),Sales)
+			```
+		formatString: 0
+		lineageTag: 855ed608-4032-4a04-8258-acd1a00e7fcc
+
+	measure 'Period Label' = "Last week with sales - " & FORMAT([Latest Week], "0") & " - " & FORMAT([Latest Year], "0")
+		lineageTag: f60775dc-cec0-479a-ac94-5a88c7554f7a
+
+	measure 'Calendar label' = ```
+			
+			    VAR __Weeks = COUNTROWS(VALUES('Date'[ISO Week]))
+			    return
+			        if(
+			            __Weeks > 1,
+			            "Multiweeks",
+			            [Latest Year] & " " & FIRSTNONBLANK('Date'[ISO Week], 1)
+			
+			        )
+			```
+		lineageTag: fef04bb1-a48a-454c-9448-1dc60b38c0c6
+
+	measure 'Selected CG' = SELECTEDVALUE('Multi Period'[Item])
+		lineageTag: 4755d64d-3bf6-456c-b39d-f979f19d09e5
+
+	measure 'Selected period title' = ```
+			"For " & SELECTEDVALUE('Date'[Year]) & " - " & 
+			IF(ISFILTERED('Date'[Month]),
+			CONCATENATEX(VALUES('Date'[Month]), [Month], ", "),
+			"All months")
+			```
+		lineageTag: 2635e12a-e871-4d03-8b81-f575b7fabbc4
+
+	measure 'Month Color' = ```
+			
+			    VAR __HasOneMonth = HASONEFILTER('Date'[Month])
+			    VAR __isSelected = HASONEVALUE('Date'[Month])
+			
+			    VAR __IsGrowing = [Sales Value Chg] > 0
+			
+			    RETURN
+			        __HasOneMonth
+			
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c93f97de-d0eb-4551-850c-2d85d17526a5
+
+	column 'Order Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: aa7a4787-1a7d-4769-af26-a6fc06f0a2c6
+		summarizeBy: sum
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Line Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d4df2a3-bfd3-4f16-ba56-1f686db38286
+		summarizeBy: sum
+		sourceColumn: Line Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: eaea3b1b-4dbf-4998-9950-876559d17296
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Delivery Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0374902e-63b1-4089-a18c-f2b7374119dd
+		summarizeBy: none
+		sourceColumn: Delivery Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: a9ab8162-d8cf-41e9-aab8-c461a1ae5419
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		lineageTag: fde89de9-2d5e-458a-bc12-8ac4cdce3d85
+		summarizeBy: none
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 3675e644-8c1b-4aa3-993a-b3d2104194af
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 330df1c5-223a-4c1e-8891-75625e4d758b
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Price'
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 49df8ccb-4790-4ca1-b3dc-683dcdb4fc16
+		summarizeBy: sum
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Net Price'
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 3fa436fe-ba33-40a1-9857-eb73e5cdcf6c
+		summarizeBy: sum
+		sourceColumn: Net Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Unit Cost'
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 4caa3f7e-d0fd-4eab-9b1c-be7212d5bf08
+		summarizeBy: sum
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Currency Code'
+		dataType: string
+		lineageTag: 0fd27b3e-1b5d-44b7-92bd-07c105e1ae41
+		summarizeBy: none
+		sourceColumn: Currency Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exchange Rate'
+		dataType: double
+		lineageTag: 93555466-7fc6-4ffd-9693-78aa0715889e
+		summarizeBy: sum
+		sourceColumn: Exchange Rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Sales-eaa27ea2-239f-467b-a013-5ecbe00a11cd = m
+		mode: import
+		source = ```
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    dbo_Sales = #"Contoso 100K"{[Schema="dbo",Item="Sales"]}[Data],
+				
+				    // Can also do the below steps in other ways, or Native SQL Query
+				    // Filter order dates before today to simulate recent data
+				    #"Filtered Rows" = 
+				        Table.SelectRows(
+				            dbo_Sales, 
+				            each [Order Date] < Date.From(DateTime.FixedLocalNow())
+				        ),
+				
+				    // Replace future delivery dates with null
+				    #"Replaced Value" = 
+				        Table.ReplaceValue(
+				            #"Filtered Rows",
+				            each [Delivery Date],
+				            each if [Delivery Date] >= Date.From(DateTime.FixedLocalNow()) then null else [Delivery Date],
+				            Replacer.ReplaceValue,
+				            {
+				                "Delivery Date"
+				            }
+				        ),
+				    
+				    // Change back to Date data type
+				    #"Changed Type" = 
+				        Table.TransformColumnTypes(
+				            #"Replaced Value",
+				            {
+				                {
+				                    "Delivery Date", 
+				                    type date
+				                }
+				            }
+				        )
+				
+				in
+				    #"Changed Type"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

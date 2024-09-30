@@ -1,0 +1,53 @@
+table Category
+	lineageTag: 50d8cdba-1b12-4f4f-9cce-567b72c36db3
+
+	column Category
+		dataType: string
+		lineageTag: 2a69c2d8-b1a2-40c5-8944-64b59d8d9273
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value1]
+		sortByColumn: 'Category Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Category Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Fields'
+		dataType: string
+		isHidden
+		lineageTag: b8c5998d-bdb6-4877-88cf-a9a47e0798d7
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value2]
+		sortByColumn: 'Category Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e8132975-290c-4a89-97ee-735baee83da3
+		summarizeBy: sum
+		isDataTypeInferred
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Category = calculated
+		mode: import
+		source =
+				{
+				    ("Category", NAMEOF('Product'[Category]), 0)
+				}
+
+	annotation PBI_Id = 1c177a31390e4978b055f91c7542c999
+

@@ -1,0 +1,257 @@
+table 'Multi Period'
+	lineageTag: c59d7825-22cf-4942-8a43-f97533bb8440
+
+	calculationGroup
+
+		calculationItem ­ = BLANK()
+
+		calculationItem 'Last Full Year' = ```
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				    VAR __CurrentYear = YEAR(__LastDate)
+				    VAR __LastYear = __CurrentYear - 1 
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), 'Date'[Year] = __LastYear)
+				
+				    RETURN 
+				        __result
+				
+				    
+				```
+
+		calculationItem 'MAT TY' = ```
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				    VAR __CurrentYear = YEAR(__LastDate)
+				    VAR __LastYear = __CurrentYear - 1 
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - 364, __LastDate))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last 26 Weeks' = ```
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				    VAR __CurrentYear = YEAR(__LastDate)
+				    VAR __LastYear = __CurrentYear - 1 
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate -( 26 * 7 -1), __LastDate))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem '­ ­' = BLANK()
+
+		calculationItem 'YTD YA' = ```
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				    VAR __CurrentYear = YEAR(__LastDate)
+				    VAR __LastYear = __CurrentYear - 1 
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), 'Date'[Year] = __LastYear)
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem YTD = ```
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				    VAR __CurrentYear = YEAR(__LastDate)
+				    VAR __LastYear = __CurrentYear - 1 
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), 'Date'[Year] = __CurrentYear)
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem '­ ­­ ­' = BLANK()
+
+		calculationItem 'Last Week - 13' = ```
+				
+				 
+				    VAR __weekCount = 14
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 12' = ```
+				
+				    VAR __weekCount = 13
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 11' = ```
+				
+				    VAR __weekCount = 12
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 10' = ```
+				
+				    VAR __weekCount = 11
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 9' = ```
+				
+				    VAR __weekCount = 10
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 8' = ```
+				
+				    VAR __weekCount = 9
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 7' = ```
+				
+				    VAR __weekCount = 8
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 6' = ```
+				
+				    VAR __weekCount = 7
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 5' = ```
+				
+				    VAR __weekCount = 6
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 4' = ```
+				
+				    VAR __weekCount = 4
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 3' = ```
+				
+				    VAR __weekCount = 4
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 2' = ```
+				
+				    VAR __weekCount = 3
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week - 1' = ```
+				
+				    VAR __weekCount = 2
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - (__weekCount*7 -1),  __LastDate - (__weekCount -1 *7)))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem 'Last Week' = ```
+				
+				    VAR __weekCount = 0
+				
+				    VAR __LastDate = CALCULATE(MAX(Sales[Order Date]), REMOVEFILTERS())
+				
+				    VAR __result = CALCULATE(SELECTEDMEASURE(), DATESBETWEEN('Date'[Date], __LastDate - 6 ,  __LastDate ))
+				
+				    RETURN 
+				        __result
+				```
+
+		calculationItem '­ ­­ ­ ­ ­­' = BLANK()
+
+	column Item
+		dataType: string
+		lineageTag: c896788b-025c-4081-9517-caa2f3f83eee
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: b0bb7fb1-243f-47a4-97f1-38d7c108658a
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

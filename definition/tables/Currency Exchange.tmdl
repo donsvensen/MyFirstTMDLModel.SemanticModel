@@ -1,0 +1,52 @@
+table 'Currency Exchange'
+	lineageTag: 7257625b-92a5-48cc-99a8-82f7bbc1bd89
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e64f5f12-6597-409b-abab-2a014db91720
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FromCurrency
+		dataType: string
+		lineageTag: 285e1490-5ac8-4d80-b1b0-8c0d74d479fd
+		summarizeBy: none
+		sourceColumn: FromCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToCurrency
+		dataType: string
+		lineageTag: 6ff455f9-cb2b-41be-8a2a-226e6044cd99
+		summarizeBy: none
+		sourceColumn: ToCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Exchange
+		dataType: double
+		lineageTag: 5634dea8-c97c-4916-877e-b8e1a2dcf69a
+		summarizeBy: sum
+		sourceColumn: Exchange
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Currency Exchange-258a8710-e1f8-4e05-ba50-9bc0fc4ef9a4' = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    #"dbo_Currency Exchange" = #"Contoso 100K"{[Schema="dbo",Item="Currency Exchange"]}[Data]
+				in
+				    #"dbo_Currency Exchange"
+
+	annotation PBI_ResultType = Table
+

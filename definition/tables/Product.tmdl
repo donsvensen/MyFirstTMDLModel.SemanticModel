@@ -1,0 +1,246 @@
+table Product
+	lineageTag: 114d347b-bbd3-4bf6-bcd7-360bc90e7afd
+
+	measure 'Selected color' = SELECTEDVALUE('Product'[Color])
+		lineageTag: 87da7336-21ac-4612-bb19-3f059ec164d5
+
+	measure 'Selected Category' = SELECTEDVALUE('Product'[Category])
+		lineageTag: ba2cee92-1a5f-448b-812c-cfa249f12a9b
+
+	measure 'Category label' = IF([Sales Value Chg] >0, "🟢", "🔴") & " " & LEFT([Selected Category], 10) & if(LEN([Selected Category])>10, "..", "")
+		lineageTag: 5302aebd-56d0-4fcf-b716-9b3739d3b4b1
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d9b5f76-e685-44a4-8ada-7da39ba7f3c9
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Code'
+		dataType: string
+		lineageTag: 77cb3d14-9599-410d-9680-3c4ed9b2137c
+		summarizeBy: none
+		sourceColumn: Product Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 6cc7b6b8-8af9-4d1e-bc9e-cbd5211d1e07
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manufacturer
+		dataType: string
+		lineageTag: 224a2cc1-852d-4b70-8e0d-2b117caa7034
+		summarizeBy: none
+		sourceColumn: Manufacturer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		formatString: ?
+		lineageTag: e313d32d-e67a-40c4-97b5-fca7edf50a64
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Brand (groups)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column Color
+		dataType: string
+		lineageTag: 49d30dcb-0c1a-42fc-b19f-72994740e9e3
+		summarizeBy: none
+		sourceColumn: Color
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weight Unit Measure'
+		dataType: string
+		lineageTag: d081e0af-f3a8-44f5-b1fc-61911f9c9ea5
+		summarizeBy: none
+		sourceColumn: Weight Unit Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weight
+		dataType: double
+		lineageTag: 8f99d9d8-b410-4a0f-8acf-46f8eceaf843
+		summarizeBy: none
+		sourceColumn: Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Cost'
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: c3785082-6d24-49e2-87f1-0c890730617b
+		summarizeBy: none
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Unit Price'
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 09a43ac3-8283-480e-aec3-c37a657ab339
+		summarizeBy: none
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'Subcategory Code'
+		dataType: string
+		lineageTag: b1efd157-34e1-4b14-8978-4f0b7df8105c
+		summarizeBy: none
+		sourceColumn: Subcategory Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subcategory
+		dataType: string
+		lineageTag: 1dbee755-58e2-48fe-97e9-71da315122bc
+		summarizeBy: none
+		sourceColumn: Subcategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Code'
+		dataType: string
+		lineageTag: e13a793f-dc07-489e-81a4-2b06b60faa02
+		summarizeBy: none
+		sourceColumn: Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: f4a9a24b-80ee-4186-9371-8df827de26a9
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand 2' = SELECTEDVALUE('Product'[Brand])
+		dataType: string
+		lineageTag: b09ffebd-45b5-4841-9fd9-f9afb5b49739
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand (groups)' = ```
+			SWITCH(
+				TRUE,
+				ISBLANK('Product'[Brand]),
+				"(Blank)",
+				'Product'[Brand] IN {"Adventure Works"},
+				" ",
+				'Product'[Brand] IN {"Contoso"},
+				" ",
+				'Product'[Brand] IN {"The Phone Company"},
+				" ",
+				'Product'[Brand] IN {"Wide World Importers"},
+				" ",
+				"____"
+			)
+			
+			```
+		dataType: string
+		formatString: General Number
+		lineageTag: b47abadf-ff5c-4c27-b0ae-72a3201f8710
+		summarizeBy: none
+		isDataTypeInferred
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Product"
+				          }
+				        },
+				        "Property": "Brand"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"Product"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Adventure Works","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand"}}],"Values":[[{"Literal":{"Value":"'Adventure Works'"}}]]}}},{"DisplayName":"Contoso","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand"}}],"Values":[[{"Literal":{"Value":"'Contoso'"}}]]}}},{"DisplayName":"The Phone Company","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand"}}],"Values":[[{"Literal":{"Value":"'The Phone Company'"}}]]}}},{"DisplayName":"Wide World Importers","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand"}}],"Values":[[{"Literal":{"Value":"'Wide World Importers'"}}]]}}},{"DisplayName":"____"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Top Group","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Top Group' = ```
+			VAR x = 	
+			    DEFINE COLUMN 'Product'[Rank] = 
+					(/* USER DAX BEGIN */
+			RANK(DENSE, ROWS, ORDERBY([Sales Value], DESC))
+			RETURN
+			SWITCH(
+				TRUE,
+				[Rank] <= x ,
+				"Top x",
+				"Other"
+			)
+			```
+		formatString: General Number
+		lineageTag: 1a1a169d-71f7-4534-8864-9f6743851e3d
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Product"
+				          }
+				        },
+				        "Property": "Brand"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"Product"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand (groups)"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Top x","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Brand (groups)"}}],"Values":[[{"Literal":{"Value":"' '"}}]]}}},{"DisplayName":"Other"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	partition Product-556f695b-d00d-47e4-b916-174eb38ca494 = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    dbo_Product = #"Contoso 100K"{[Schema="dbo",Item="Product"]}[Data]
+				in
+				    dbo_Product
+
+	annotation PBI_ResultType = Table
+

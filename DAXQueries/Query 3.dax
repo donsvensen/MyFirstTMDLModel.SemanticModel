@@ -1,0 +1,20 @@
+DEFINE
+	VAR __DS0FilterTable = 
+		TREATAS({"Audio"}, 'Product'[Category])
+
+	VAR __DS0FilterTable2 = 
+		TREATAS({"'Product'[Category]"}, 'Product attribute'[Product attribute Fields])
+
+	VAR __DS0Core = 
+		SUMMARIZECOLUMNS(
+			'Product'[Category],
+			__DS0FilterTable,
+			__DS0FilterTable2,
+			"Selected_PA", 'Product attribute'[Selected PA]
+		)
+
+	VAR __DS0PrimaryWindowed = 
+		TOPN(501, __DS0Core, 'Product'[Category], 1)
+
+EVALUATE
+	__DS0FilterTable

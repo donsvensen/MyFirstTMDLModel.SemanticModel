@@ -1,0 +1,7 @@
+DEFINE
+    MEASURE 'KPI Indicator'[KPI 10] = IF([100 Value] <= 10, "#fcfcfc", "#fd9c19")
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "KPI 10", 'KPI Indicator'[KPI 10]
+    )

@@ -1,0 +1,167 @@
+table Customer
+	lineageTag: f702f352-1057-4140-bbd2-30e3bf5e1971
+
+	measure 'Customer #' = COUNTROWS(Customer)
+		formatString: 0
+		lineageTag: 48eed97b-c665-44c5-b07e-5f64b15dc1c4
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: e23d3477-cfaa-439d-a82b-5ed5e93b2ed3
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: d590070a-163e-4907-a96d-2aeb2fa6afa8
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 6fb37438-eac0-4454-9168-1b682eeb9862
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 3c95bda0-541f-4f2c-8555-9fd9d7ff0af3
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: da45ab3d-a819-465a-9434-2b461b536d1e
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Code'
+		dataType: string
+		lineageTag: 43634ab5-ed89-4034-a540-f7b20a3ea87b
+		summarizeBy: none
+		sourceColumn: State Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 973000b1-1562-47c8-b7f5-80d840707c25
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Zip Code'
+		dataType: string
+		lineageTag: db8563bb-1746-4824-ac34-6daa6e548673
+		summarizeBy: none
+		sourceColumn: Zip Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Code'
+		dataType: string
+		lineageTag: 058ccb18-96f8-4d16-b449-1a2759a68cce
+		summarizeBy: none
+		sourceColumn: Country Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 116ef4ab-44fc-4839-99e3-823ed170adfc
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Continent
+		dataType: string
+		lineageTag: e1679fb9-4fbc-4c39-94ad-c5a0398df6e1
+		summarizeBy: none
+		sourceColumn: Continent
+
+		annotation SummarizationSetBy = Automatic
+
+	column Birthday
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 67887d6f-867e-46dd-8ee5-68a428fbf37b
+		summarizeBy: none
+		sourceColumn: Birthday
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 3623b5b1-b5b8-4c22-8c4b-b48e20775adf
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Customer","TableItemName":"Age (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column 'Age (bins)' =
+			IF(
+				ISBLANK('Customer'[Age]),
+				BLANK(),
+				INT('Customer'[Age] / 10) * 10
+			)
+		dataType: int64
+		formatString: 0
+		lineageTag: 31129cac-fd57-4c5f-8a04-68454d286074
+		summarizeBy: none
+		isDataTypeInferred
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "Customer"
+				          }
+				        },
+				        "Property": "Age"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 10.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"c","Entity":"Customer"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Age"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"c"}},"Property":"Age"}},"Size":10.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer-66ccf834-a449-41ea-9e0e-976581b1b7cb = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    dbo_Customer = #"Contoso 100K"{[Schema="dbo",Item="Customer"]}[Data]
+				in
+				    dbo_Customer
+
+	annotation PBI_ResultType = Table
+

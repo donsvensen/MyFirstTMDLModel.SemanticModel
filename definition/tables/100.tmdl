@@ -1,0 +1,63 @@
+table 100
+	lineageTag: 792c785d-7867-4616-a845-bac9f28d9717
+
+	measure '100 Value' = SELECTEDVALUE('100'[100])
+		formatString: 0
+		lineageTag: 04eb4b78-cd88-4771-b21d-a8f42000fa34
+
+	measure '100 Text' = FORMAT([100 Value], "@")
+		lineageTag: c2da861d-81cf-42fc-a52b-7abdf2e04df3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Min Limit' = MIN('100'[100])
+		formatString: 0
+		lineageTag: 8764cfd3-1d3a-4a3a-af9b-d57b7b4963e5
+
+	measure 'Max limit' = MAX('100'[100])
+		formatString: 0
+		lineageTag: 6eb9cc5f-ad24-4a85-82d2-3477baffb644
+
+	measure 'Toggle text II' = SELECTEDVALUE('100'[Toggle text])
+		lineageTag: d4b5be24-649d-46a4-8d70-ded72c646367
+
+	measure 'Toogle text color' = IF([100 Value]=0, "#2c4d6b00", "#f9f5f5")
+		lineageTag: 494a7f81-de95-4f36-b7be-f16e9f24c9e4
+
+	column 100
+		dataType: int64
+		lineageTag: 1c8b74df-1482-438c-9bb7-11990154162c
+		summarizeBy: sum
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '100 as text' = FORMAT([100], "@")
+		dataType: string
+		lineageTag: c37f3957-dc14-48ff-b19c-bd56fa78bb1b
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Toggle text' = IF([100]>0, "Rank", "Value")
+		dataType: string
+		lineageTag: 316f115e-0822-4931-81cd-84631c621cbd
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 100 = calculated
+		mode: import
+		source = GENERATESERIES(0, 100, 1)
+
+	annotation PBI_Id = db2d8ab6b3ab423f974cb6d001a3c573
+

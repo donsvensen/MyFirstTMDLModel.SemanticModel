@@ -1,0 +1,12 @@
+DEFINE
+	VAR __DS0Core = 
+		VALUES('Product'[Category])
+
+	VAR __DS0PrimaryWindowed = 
+		TOPN(101, __DS0Core, 'Product'[Category], 1)
+
+EVALUATE
+	__DS0PrimaryWindowed
+
+ORDER BY
+	'Product'[Category]

@@ -1,0 +1,280 @@
+table Date
+	lineageTag: 690ea65b-4cdc-48af-b1b9-f2c34f5aa2df
+	dataCategory: Time
+
+	measure 'M Short' = LEFT(SELECTEDVALUE('Date'[Month Short]), 1)
+		lineageTag: 60b7f2ef-431f-45b5-9522-989dde155755
+
+	measure 'Sub title year' = MAX('Date'[Year]) & " - by month"
+		lineageTag: 0db69914-5499-4e08-adec-0b8577f52489
+
+	measure 'M Num' = MAX('Date'[Month Number])
+		lineageTag: 60932404-bfe3-4707-964e-958288c82758
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Dash = REPT("¨", 10)
+		lineageTag: 016f1488-71c8-4520-8a33-c1365616f828
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cal Date' = FIRSTDATE('Date'[Date])
+		lineageTag: 7b18a294-3d8c-4080-a7b9-7bdda7a8d9bf
+
+		formatStringDefinition = FORMAT(DAY([Cal Date]), "0")
+
+	measure 'Selected month' = SELECTEDVALUE('Date'[Year Month])
+		lineageTag: c04f33b4-c77a-4af9-b371-690e0fb8c612
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: 78f46561-4281-41a7-bae0-fa54ea2d5e2d
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: baf0e24c-caf5-4acd-a0f2-46b53cc586ef
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter'
+		dataType: string
+		lineageTag: 5461b05a-a0a4-444c-86d8-86d149c8aa30
+		summarizeBy: none
+		sourceColumn: Year Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Quarter Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b6da606-1265-48e3-8b5b-020fc871d7ed
+		summarizeBy: sum
+		sourceColumn: Year Quarter Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: 3b66fbcf-d6e6-4504-b62a-deceb0ab8b0b
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		dataType: string
+		lineageTag: 47fa4f8e-008e-436b-83b5-cbf76c291762
+		summarizeBy: none
+		sourceColumn: Year Month
+		sortByColumn: 'Year Month Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Short'
+		dataType: string
+		lineageTag: d3c50280-15a2-492a-8ba5-f8265b164158
+		summarizeBy: none
+		sourceColumn: Year Month Short
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5cdf6be6-87c5-4bfc-b9cf-f4c047ce9fe7
+		summarizeBy: sum
+		sourceColumn: Year Month Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: 8d9255aa-4b73-4933-83e2-b3b8d056b346
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short'
+		dataType: string
+		lineageTag: 9c3a98b5-ee2c-4477-bf1e-c9b9131426f2
+		summarizeBy: none
+		sourceColumn: Month Short
+		sortByColumn: 'Month Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 308f4795-bf10-4670-8908-80b4bf83070f
+		summarizeBy: sum
+		sourceColumn: Month Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week'
+		dataType: string
+		lineageTag: 0ef894bd-2ad3-413d-8178-b9c4f9ea99ef
+		summarizeBy: none
+		sourceColumn: Day of Week
+		sortByColumn: 'Day of Week (Mon)'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week Short'
+		dataType: string
+		lineageTag: c201cf56-fa28-4c7f-9a4e-68849f358fe8
+		summarizeBy: none
+		sourceColumn: Day of Week Short
+		sortByColumn: 'Day of Week (Mon)'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c951a33-5ed5-4ad1-bd12-8b35ac10542b
+		summarizeBy: sum
+		sourceColumn: Day of Week Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Working Day'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 254eea71-a4b2-4277-b159-3ae2d231cef3
+		summarizeBy: none
+		sourceColumn: Working Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Working Day Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: f2ca52e8-3b01-4b84-8668-98cf452bc6df
+		summarizeBy: sum
+		sourceColumn: Working Day Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastDateWithData =
+			VAR LastDateWithData =
+			    CALCULATE (
+			        MAX ( 'Date'[Date] ),
+			        'Date'[DateWithSales] = TRUE,
+			        REMOVEFILTERS ()
+			    )
+			RETURN
+			    IF (
+			        LastDateWithData == 'Date'[Date],
+			        "LastDateWithData"
+			    )
+		dataType: string
+		lineageTag: c3b2e986-9ee3-40a5-a4b3-dae08c21c0fa
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateWithSales = 'Date'[Date] <= MAX ( 'Sales'[Order Date])
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e1782a49-8361-41ce-8a55-f33d5b56dcfd
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ISO Week' = WEEKNUM([Date],21)
+		dataType: int64
+		formatString: 0
+		lineageTag: b7954e0a-4d56-4171-a9c3-8c38069aae2b
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column M = left('Date'[Month Short], 1)
+		dataType: string
+		lineageTag: 285b4162-f4ff-451e-9ad9-7f4b6b108d72
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column WD = FORMAT([Date], "DDD")
+		dataType: string
+		lineageTag: ab7285b4-17f8-42ee-96fd-11a9e5527fb8
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week (Mon)' = WEEKDAY('Date'[Date],2)
+		dataType: int64
+		formatString: 0
+		lineageTag: b5949958-b0bb-4245-b602-b81faf15a60b
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = User
+
+	column 'Day of Week (D)' = LEFT('Date'[Day of Week], 1)
+		dataType: string
+		lineageTag: e3cf5033-6d58-478e-8184-fb91117ad12e
+		alignment: right
+		summarizeBy: none
+		isDataTypeInferred
+		sortByColumn: 'Day of Week (Mon)'
+
+		relatedColumnDetails
+			groupByColumn: 'Day of Week Short'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Month' = DAY('Date'[Date])
+		dataType: int64
+		formatString: 0
+		lineageTag: afbd3054-e92d-47c9-ab9d-41c4a696be93
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date-84cc6477-b0c4-43bd-a95d-ee0ed4f3b8f2 = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    #"Contoso 100K" = Source{[Name="Contoso 100K"]}[Data],
+				    dbo_Date = #"Contoso 100K"{[Schema="dbo",Item="Date"]}[Data]
+				in
+				    dbo_Date
+
+	annotation PBI_ResultType = Table
+

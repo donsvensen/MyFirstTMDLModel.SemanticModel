@@ -1,0 +1,48 @@
+EVALUATE
+	ROW(
+		"Table", "Customer",
+		"Column", "Age (bins)",
+		"Count", COUNT('Customer'[Age (bins)]),
+		"Distinct Values", DISTINCTCOUNTNOBLANK('Customer'[Age (bins)]),
+		"Null Count", COUNTROWS('Customer') - COUNT('Customer'[Age (bins)]),
+		"Min", MIN('Customer'[Age (bins)]),
+		"Max", MAX('Customer'[Age (bins)]),
+		"Median", MEDIAN('Customer'[Age (bins)]),
+		"Mean", AVERAGE('Customer'[Age (bins)]),
+		"Standard Deviation", STDEV.P('Customer'[Age (bins)]),
+		"Zeros", COALESCE(
+			COUNTROWS(FILTER(
+				'Customer',
+				'Customer'[Age (bins)] = 0
+			)),
+			0
+		),
+		"Evens", COALESCE(
+			COUNTROWS(FILTER(
+				'Customer',
+				MOD(
+					'Customer'[Age (bins)],
+					2
+				) = 0
+			)),
+			0
+		),
+		"Odds", COALESCE(
+			COUNTROWS(FILTER(
+				'Customer',
+				MOD(
+					'Customer'[Age (bins)],
+					2
+				) <> 0
+			)),
+			0
+		),
+		"P25", PERCENTILE.INC(
+			'Customer'[Age (bins)],
+			0.25
+		),
+		"P75", PERCENTILE.INC(
+			'Customer'[Age (bins)],
+			0.75
+		)
+	)
